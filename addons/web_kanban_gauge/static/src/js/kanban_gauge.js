@@ -79,9 +79,7 @@ var GaugeWidget = AbstractField.extend({
                         gauge_value,
                         max_value - gauge_value
 					],
-					backgroundColor: [
-                        "#1f77b4", "#dddddd"
-					],
+					backgroundColor: this.nodeOptions.backgroundColor || ["#1f77b4", "#dddddd"],
 					label: title
 				}],
 			},
