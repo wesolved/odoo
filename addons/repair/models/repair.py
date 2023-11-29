@@ -370,7 +370,7 @@ class Repair(models.Model):
                     invoice_vals['narration'] += '\n' + narration
 
             # Create invoice lines from operations.
-            for operation in repair.operations.filtered(lambda op: op.type == 'add'):
+            for operation in repair._get_operations_to_invoice():
                 if group:
                     name = repair.name + '-' + operation.name
                 else:
@@ -467,6 +467,10 @@ class Repair(models.Model):
         repairs.mapped('fees_lines').write({'invoiced': True})
 
         return dict((repair.id, repair.invoice_id.id) for repair in repairs)
+
+    def _get_operations_to_invoice(self):
+        self.ensure_one()
+        return self.operations.filtered(lambda op: op.type == 'add')
 
     def action_created_invoice(self):
         self.ensure_one()
